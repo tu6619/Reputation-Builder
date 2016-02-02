@@ -22,8 +22,11 @@ var showQuestion = function() {
 var showAnswerers = function() {
     var resultsBox = document.getElementById('search-results');
     response.items.forEach(function(item) {
-        var para = document.createElement('h2');
-        para.innerHTML = item.user.reputation;
+        var h2 = document.createElement('h2');
+        h2.innerHTML = item.user.reputation;
+        var para = document.createElement('p');
+        para.innerHTML = item.user.display_name;
+        resultsBox.appendChild(h2);
         resultsBox.appendChild(para);
     });
 };
@@ -39,8 +42,9 @@ var showSearchResults = function(query, resultNum) {
 // takes a string from input and searches
 // for unaswered questions on StackOverflow API.
 
+
 var getUnanswered = function(tags) {
-    var url = 'https://api.stackexchange.com/2.2/questions/unanswered?pagesize=5&sort=activity&tagged=' + tags + '&site=stackoverflow';
+    var url = 'https://api.stackexchange.com/2.2/questions/unanswered?pagesize=5&sort=activity&tagged=' + tags + '&site=stackoverflow&key=' + key;
     xhr.open('GET', url, false);
     xhr.send();
     console.log(response);
@@ -48,7 +52,7 @@ var getUnanswered = function(tags) {
 };
 
 var getTopAnswerers = function(tags) {
-    var url = '/2.2/tags/javascript/top-answerers/all_time?pagesize=5' + tags + '&site=stackoverflow';
+    var url = 'https://api.stackexchange.com/2.2/tags/javascript/top-answerers/all_time?pagesize=5&site=stackoverflow&key=' + key;
     xhr.open('GET', url, false);
     xhr.send();
     console.log(response);
@@ -69,5 +73,6 @@ document.getElementById('inspiration-getter').addEventListener('submit',function
 	  e.preventDefault();
 	  document.getElementById('results').innerHTML+="";
 	  var inspiration = document.getElementById('inspiration').value;
-	  getUnanswered(inspiration);
+      console.log('inspiration');
+	  getTopAnswerers(inspiration);
 });
